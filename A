@@ -6,7 +6,7 @@ debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
 debug.setupvalue(Client.Network.Fire, 1, function() return true end)
 
 function GetDiamonds(Area)
-    local Coins = {}
+    local Diamonds = {}
     for i,v in next, Client.Network.Invoke('Get Diamonds') do 
         if v.a == Area then 
             Diamonds[i] = v
@@ -36,8 +36,8 @@ while true do
                 for _,Pet in next, Pets do 
                     spawn(function()
                         if _G.AutoFarm then
-                            Client.Network.Invoke('Join Coin', i, {Pet.uid})
-                            Client.Network.Fire('Farm Coin', i, Pet.uid)
+                            Client.Network.Invoke('Join Diamond', i, {Pet.uid})
+                            Client.Network.Fire('Farm Diamond', i, Pet.uid)
                         end
                     end)
                 end 
