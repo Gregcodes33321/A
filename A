@@ -5,14 +5,14 @@ local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
 debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
 debug.setupvalue(Client.Network.Fire, 1, function() return true end)
 
-function GetDiamonds(Area)
-    local Diamonds = {}
-    for i,v in next, Client.Network.Invoke('Get Diamonds') do 
+function GetCoins(Area)
+    local Coins = {}
+    for i,v in next, Client.Network.Invoke('Get Coins') do 
         if v.a == Area then 
-            Diamonds[i] = v
+            Coins[i] = v
         end 
     end 
-    return Diamonds
+    return Coins
 end 
 
 function GetPets()
@@ -30,14 +30,14 @@ end)
 while true do 
     if _G.AutoFarm then
         local Pets = GetPets()
-        local Diamonds = GetDiamonds(_G.Area or 'Diamond Mine')
-        for i,v in next, Diamonds do
+        local Coins = GetCoins(_G.Area or 'Paradise Cave')
+        for i,v in next, Coins do
             if workspace.__THINGS.Coins:FindFirstChild(i) and _G.AutoFarm then 
                 for _,Pet in next, Pets do 
                     spawn(function()
                         if _G.AutoFarm then
-                            Client.Network.Invoke('Join Diamond', i, {Pet.uid})
-                            Client.Network.Fire('Farm Diamond', i, Pet.uid)
+                            Client.Network.Invoke('Join Coin', i, {Pet.uid})
+                            Client.Network.Fire('Farm Coin', i, Pet.uid)
                         end
                     end)
                 end 
