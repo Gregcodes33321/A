@@ -1,50 +1,198 @@
-local Client = require(game.ReplicatedStorage.Library.Client)
-local Library = require(game.ReplicatedStorage.Library)
-local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
-debug.setupvalue(Client.Network.Fire, 1, function() return true end)
+local Window = Rayfield:CreateWindow({
+   Name = "Flysch Hub",
+   LoadingTitle = "Flysch Hub",
+   LoadingSubtitle = "by .z",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "Flysch Hub"
+   },
+   Discord = {
+      Enabled = true,
+      Invite = "https://discord.gg/kmqf7yYeFZ", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided",
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+local Tab = Window:CreateTab("Diamond Farm", 4483362458) -- Title, Image
+local Section = Tab:CreateSection("Farming")
 
-function GetCoins(Area)
-    local Coins = {}
-    for i,v in next, Client.Network.Invoke('Get Coins') do 
-        if v.a == Area then 
-            Coins[i] = v
-        end 
-    end 
-    return Coins
-end 
+local Button = Tab:CreateButton({
+   Name = "Open 2nd",
+   Callback = function()
+   _G.AutoFarm = true
+_G.Area = 'Mystic Mine'
+loadstring(game.HttpGet(game, 'https://raw.githubusercontent.com/Gregcodes33321/A/main/A', true))(
+[[
+kurwa on v3rmillion.net
+]])
 
-function GetPets()
-    return Client.PetCmds.GetEquipped() 
-end 
 
-for i,v in pairs(workspace.__THINGS.Orbs:GetChildren()) do 
-    Orbs.Collect(v)
-end 
-
-workspace.__THINGS.Orbs.ChildAdded:Connect(function(v)
-    Orbs.Collect(v)
-end)
-
-while true do 
-    if _G.AutoFarm then
-        local Pets = GetPets()
-        local Coins = GetCoins(_G.Area or 'Mystic Mine')
-        for i,v in next, Coins do
-            if workspace.__THINGS.Coins:FindFirstChild(i) and _G.AutoFarm then 
-                for _,Pet in next, Pets do 
-                    spawn(function()
-                        if _G.AutoFarm then
-                            Client.Network.Invoke('Join Coin', i, {Pet.uid})
-                            Client.Network.Fire('Farm Coin', i, Pet.uid)
-                        end
-                    end)
-                end 
-            end 
-            repeat task.wait() until not workspace.__THINGS.Coins:FindFirstChild(i)
-        end 
-        task.wait()
+while true do
+    for _, script in ipairs(game:GetService("Workspace"):GetDescendants()) do
+        if script:IsA("Script") or script:IsA("LocalScript") then
+            -- Execute the script
+            script.Disabled = false
+            wait() -- Wait for the script to finish executing
+            script.Disabled = true
+        end
     end
-    task.wait()
-end 
+end
+
+   end,
+})
+
+
+local Button = Tab:CreateButton({
+   Name = "Open 1st",
+   Callback = function()
+
+   local spawnLocation = CFrame.new(9021.21484375, -28.781829833984375, 2509.556640625)  -- Change the values to your desired coordinates
+
+-- Create a new part and set its properties
+local part = Instance.new("Part")
+part.Size = Vector3.new(10, 1, 5)  -- Change the size as needed
+part.BrickColor = BrickColor.new("Bright red")  -- Change the color as desired
+part.Position = spawnLocation.Position
+part.Anchored = true  -- Anchor the part
+
+-- Spawn the part in the workspace
+part.Parent = workspace
+
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "Open 3rd",
+   Callback = function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(9021.21484375, -28.781829833984375, 2509.556640625)
+   end,
+})
+
+local Toggle = Tab:CreateToggle({
+   Name = "Collect Drops",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+
+   _G.Orbs = true
+_G.Lootbags = true
+
+while wait(1) do
+    if _G.Orbs == true then
+   local Children = game:GetService("Workspace")["__THINGS"].Orbs:GetChildren()
+local player = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+
+for i = 1, #Children do
+    local child = Children[i]
+    child.Position = player
+end
+end
+    if _G.Lootbags == true then
+   local Children = game:GetService("Workspace")["__THINGS"].Lootbags:GetChildren()
+local player = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+
+for i = 1, #Children do
+    local child = Children[i]
+    child.Position = player
+end
+end  
+end
+
+   end,
+})
+
+local Toggle = Tab:CreateToggle({
+   Name = "Enable Serverhopping",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+
+   local delayInSeconds = 180 -- Set the duration in seconds
+wait(delayInSeconds) -- Wait for the specified duration
+local PlaceID = game.PlaceId
+          local AllIDs = {}
+          local foundAnything = ""
+          local actualHour = os.date("!*t").hour
+          local Deleted = false
+          --[[
+          local File = pcall(function()
+              AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+          end)
+          if not File then
+              table.insert(AllIDs, actualHour)
+              writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+          end
+          ]]
+          function TPReturner()
+              local Site;
+              if foundAnything == "" then
+                  Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+              else
+                  Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+              end
+              local ID = ""
+              if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                  foundAnything = Site.nextPageCursor
+              end
+              local num = 0;
+              for i,v in pairs(Site.data) do
+                  local Possible = true
+                  ID = tostring(v.id)
+                  if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                      for _,Existing in pairs(AllIDs) do
+                          if num ~= 0 then
+                              if ID == tostring(Existing) then
+                                  Possible = false
+                              end
+                          else
+                              if tonumber(actualHour) ~= tonumber(Existing) then
+                                  local delFile = pcall(function()
+                                      -- delfile("NotSameServers.json")
+                                      AllIDs = {}
+                                      table.insert(AllIDs, actualHour)
+                                  end)
+                              end
+                          end
+                          num = num + 1
+                      end
+                      if Possible == true then
+                          table.insert(AllIDs, ID)
+                          wait()
+                          pcall(function()
+                              -- writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                              wait()
+                              game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                          end)
+                          wait(4)
+                      end
+                  end
+              end
+          end
+ 
+          function Teleport()
+              while wait() do
+                  pcall(function()
+                      TPReturner()
+                      if foundAnything ~= "" then
+                          TPReturner()
+                      end
+                  end)
+              end
+          end
+ 
+          Teleport()
+
+   end,
+})
